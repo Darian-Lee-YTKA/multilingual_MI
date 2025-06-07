@@ -1,0 +1,39 @@
+XLM-RoBERTa Case Prediction Evaluation Results
+============================================
+
+Overall Accuracy: 59.60%
+Total Predictions: 99
+Correct Predictions: 59
+
+Per-Case Accuracy:
+nom: 75.00% (9/12)
+dat: 10.53% (2/19)
+gen: 94.44% (17/18)
+acc: 95.65% (22/23)
+ins: 52.94% (9/17)
+prep: 0.00% (0/10)
+
+Prediction Patterns Analysis:
+
+When correct case is nom:
+  Predicted as nom: 9 times (75.0%)
+  Predicted as acc: 3 times (25.0%)
+
+When correct case is dat:
+  Predicted as acc: 17 times (89.5%)
+  Predicted as dat: 2 times (10.5%)
+
+When correct case is gen:
+  Predicted as gen: 17 times (94.4%)
+  Predicted as nom: 1 times (5.6%)
+
+When correct case is acc:
+  Predicted as acc: 22 times (95.7%)
+  Predicted as gen: 1 times (4.3%)
+
+When correct case is ins:
+  Predicted as ins: 9 times (52.9%)
+  Predicted as gen: 8 times (47.1%)
+
+When correct case is prep:
+  Predicted as gen: 10 times (100.0%)
