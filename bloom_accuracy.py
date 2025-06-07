@@ -328,12 +328,13 @@ def evaluate_case_prediction(model, tokenizer, rumi_data: pd.DataFrame) -> dict:
 
 # Load model and data
 print("Loading model and data...")
-model_name = "ai-forever/rugpt3small_based_on_gpt2"  # Using RuGPT-3 small model
+model_name = "bigscience/bloom-3b"  # Changed to BLOOM-3B
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     torch_dtype=torch.float16,  # Use half precision for memory efficiency
-    low_cpu_mem_usage=True
+    low_cpu_mem_usage=True,
+    device_map="auto"  # Added for better memory management with BLOOM
 )
 
 # Move model to GPU if available
@@ -394,6 +395,7 @@ else:
 print("\nEvaluating model's case prediction accuracy...")
 evaluation_results = evaluate_case_prediction(model, tokenizer, rumi_data)
 
+# Print to console
 print("\nEvaluation Results:")
 print(f"Overall Accuracy: {evaluation_results['overall_accuracy']:.2%}")
 print(f"Total Predictions: {evaluation_results['total_predictions']}")
@@ -402,3 +404,26 @@ print("\nPer-Case Accuracy:")
 for case, results in evaluation_results['case_results'].items():
     if results['total'] > 0:  # Only show cases that appear in the data
         print(f"{case}: {results['accuracy']:.2%} ({results['correct']}/{results['total']})")
+
+# Save results to file
+with open('bloom_accuracy.txt', 'w', encoding='utf-8') as f:
+    f.write("BLOOM-3B Case Prediction Evaluation Results\n")
+    f.write("==========================================\n\n")
+    f.write(f"Overall Accuracy: {evaluation_results['overall_accuracy']:.2%}\n")
+    f.write(f"Total Predictions: {evaluation_results['total_predictions']}\n")
+    f.write(f"Correct Predictions: {evaluation_results['correct_predictions']}\n\n")
+    
+    f.write("Per-Case Accuracy:\n")
+    for case, results in evaluation_results['case_results'].items():
+        if results['total'] > 0:
+            f.write(f"{case}: {results['accuracy']:.2%} ({results['correct']}/{results['total']})\n")
+    
+    f.write("\nPrediction Patterns Analysis:\n")
+    for true_case, predictions in evaluation_results['prediction_patterns'].items():
+        if evaluation_results['case_results'][true_case]['total'] > 0:
+            f.write(f"\nWhen correct case is {true_case}:\n")
+            sorted_predictions = sorted(predictions.items(), key=lambda x: x[1], reverse=True)
+            for pred_case, count in sorted_predictions:
+                if count > 0:
+                    percentage = count / evaluation_results['case_results'][true_case]['total'] * 100
+                    f.write(f"  Predicted as {pred_case}: {count} times ({percentage:.1f}%)\n")

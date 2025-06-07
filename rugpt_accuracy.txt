@@ -1,0 +1,49 @@
+RuGPT-3 Small Case Prediction Evaluation Results
+==============================================
+
+Overall Accuracy: 42.42%
+Total Predictions: 99
+Correct Predictions: 42
+
+Per-Case Accuracy:
+nom: 50.00% (6/12)
+dat: 31.58% (6/19)
+gen: 50.00% (9/18)
+acc: 26.09% (6/23)
+ins: 88.24% (15/17)
+prep: 0.00% (0/10)
+
+Prediction Patterns Analysis:
+
+When correct case is nom:
+  Predicted as nom: 6 times (50.0%)
+  Predicted as ins: 4 times (33.3%)
+  Predicted as gen: 2 times (16.7%)
+
+When correct case is dat:
+  Predicted as ins: 9 times (47.4%)
+  Predicted as dat: 6 times (31.6%)
+  Predicted as nom: 3 times (15.8%)
+  Predicted as gen: 1 times (5.3%)
+
+When correct case is gen:
+  Predicted as gen: 9 times (50.0%)
+  Predicted as nom: 4 times (22.2%)
+  Predicted as ins: 4 times (22.2%)
+  Predicted as dat: 1 times (5.6%)
+
+When correct case is acc:
+  Predicted as gen: 11 times (47.8%)
+  Predicted as acc: 6 times (26.1%)
+  Predicted as ins: 6 times (26.1%)
+
+When correct case is ins:
+  Predicted as ins: 15 times (88.2%)
+  Predicted as nom: 1 times (5.9%)
+  Predicted as gen: 1 times (5.9%)
+
+When correct case is prep:
+  Predicted as nom: 5 times (50.0%)
+  Predicted as gen: 3 times (30.0%)
+  Predicted as dat: 1 times (10.0%)
+  Predicted as ins: 1 times (10.0%)
