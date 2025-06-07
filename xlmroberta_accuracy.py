@@ -9,6 +9,88 @@ import io
 # Set stdout to handle UTF-8 encoding
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
+# Russian preposition dictionary with case patterns
+prepositions = {
+    'в': {'cases': ['prep', 'acc'], 'context': ['location', 'time', 'state']},
+    'на': {'cases': ['prep', 'acc'], 'context': ['surface', 'time', 'state']},
+    'с': {'cases': ['ins'], 'context': ['accompaniment', 'instrument', 'manner']},
+    'к': {'cases': ['dat'], 'context': ['direction', 'purpose']},
+    'от': {'cases': ['gen'], 'context': ['source', 'cause', 'separation']},
+    'у': {'cases': ['gen'], 'context': ['possession', 'location']},
+    'по': {'cases': ['dat', 'prep'], 'context': ['surface', 'time', 'manner']},
+    'о': {'cases': ['prep'], 'context': ['topic', 'subject']},
+    'за': {'cases': ['acc', 'ins'], 'context': ['location', 'time', 'purpose']},
+    'под': {'cases': ['acc', 'ins'], 'context': ['location', 'state']},
+    'над': {'cases': ['ins'], 'context': ['location', 'superiority']},
+    'перед': {'cases': ['ins'], 'context': ['location', 'time']},
+    'между': {'cases': ['ins'], 'context': ['location', 'relationship']},
+    'через': {'cases': ['acc'], 'context': ['time', 'space']},
+    'без': {'cases': ['gen'], 'context': ['absence', 'lack']},
+    'для': {'cases': ['gen'], 'context': ['purpose', 'benefit']},
+    'до': {'cases': ['gen'], 'context': ['limit', 'time']},
+    'из': {'cases': ['gen'], 'context': ['source', 'material']},
+    'про': {'cases': ['acc'], 'context': ['topic', 'subject']},
+    'ради': {'cases': ['gen'], 'context': ['purpose', 'benefit']},
+    'сквозь': {'cases': ['acc'], 'context': ['space', 'time']},
+    'среди': {'cases': ['gen'], 'context': ['location', 'group']},
+    'вокруг': {'cases': ['gen'], 'context': ['location', 'surroundings']},
+    'вдоль': {'cases': ['gen'], 'context': ['direction', 'location']},
+    'внутри': {'cases': ['gen'], 'context': ['location', 'interior']},
+    'вне': {'cases': ['gen'], 'context': ['location', 'exclusion']},
+    'вопреки': {'cases': ['dat'], 'context': ['opposition', 'contrast']},
+    'благодаря': {'cases': ['dat'], 'context': ['cause', 'reason']},
+    'согласно': {'cases': ['dat'], 'context': ['agreement', 'correspondence']},
+    'навстречу': {'cases': ['dat'], 'context': ['direction', 'movement']},
+    'наперекор': {'cases': ['dat'], 'context': ['opposition', 'defiance']},
+    'подобно': {'cases': ['dat'], 'context': ['similarity', 'comparison']},
+    'соответственно': {'cases': ['dat'], 'context': ['correspondence', 'agreement']}
+}
+
+# Russian verb dictionary with case patterns
+verb_cases = {
+    'видеть': {'cases': ['acc'], 'context': ['perception', 'observation']},
+    'любить': {'cases': ['acc'], 'context': ['emotion', 'preference']},
+    'ждать': {'cases': ['gen'], 'context': ['expectation', 'anticipation']},
+    'бояться': {'cases': ['gen'], 'context': ['emotion', 'fear']},
+    'хотеть': {'cases': ['gen'], 'context': ['desire', 'wish']},
+    'давать': {'cases': ['dat'], 'context': ['transfer', 'giving']},
+    'говорить': {'cases': ['dat', 'prep'], 'context': ['communication', 'speech']},
+    'помогать': {'cases': ['dat'], 'context': ['assistance', 'support']},
+    'управлять': {'cases': ['ins'], 'context': ['control', 'direction']},
+    'гордиться': {'cases': ['ins'], 'context': ['emotion', 'pride']},
+    'заниматься': {'cases': ['ins'], 'context': ['activity', 'occupation']},
+    'думать': {'cases': ['prep'], 'context': ['thought', 'consideration']},
+    'мечтать': {'cases': ['prep'], 'context': ['imagination', 'desire']},
+    'встречать': {'cases': ['acc'], 'context': ['meeting', 'greeting']},
+    'понимать': {'cases': ['acc'], 'context': ['comprehension', 'understanding']},
+    'знать': {'cases': ['acc'], 'context': ['knowledge', 'familiarity']},
+    'слушать': {'cases': ['acc'], 'context': ['perception', 'attention']},
+    'смотреть': {'cases': ['acc'], 'context': ['perception', 'observation']},
+    'чувствовать': {'cases': ['acc'], 'context': ['perception', 'sensation']},
+    'желать': {'cases': ['gen'], 'context': ['desire', 'wish']},
+    'требовать': {'cases': ['gen'], 'context': ['demand', 'request']},
+    'просить': {'cases': ['gen'], 'context': ['request', 'appeal']},
+    'лишиться': {'cases': ['gen'], 'context': ['loss', 'deprivation']},
+    'добиваться': {'cases': ['gen'], 'context': ['achievement', 'attainment']},
+    'добиться': {'cases': ['gen'], 'context': ['achievement', 'success']},
+    'избегать': {'cases': ['gen'], 'context': ['avoidance', 'evasion']},
+    'избежать': {'cases': ['gen'], 'context': ['avoidance', 'escape']},
+    'касаться': {'cases': ['gen'], 'context': ['contact', 'relation']},
+    'касаться': {'cases': ['prep'], 'context': ['relation', 'connection']},
+    'надеяться': {'cases': ['prep'], 'context': ['hope', 'expectation']},
+    'заботиться': {'cases': ['prep'], 'context': ['care', 'concern']},
+    'интересоваться': {'cases': ['ins'], 'context': ['interest', 'curiosity']},
+    'увлекаться': {'cases': ['ins'], 'context': ['interest', 'enthusiasm']},
+    'восхищаться': {'cases': ['ins'], 'context': ['admiration', 'delight']},
+    'довольствоваться': {'cases': ['ins'], 'context': ['satisfaction', 'contentment']},
+    'пользоваться': {'cases': ['ins'], 'context': ['use', 'utilization']},
+    'обладать': {'cases': ['ins'], 'context': ['possession', 'ownership']},
+    'владеть': {'cases': ['ins'], 'context': ['possession', 'control']},
+    'руководить': {'cases': ['ins'], 'context': ['control', 'direction']},
+    'командовать': {'cases': ['ins'], 'context': ['control', 'authority']},
+    'распоряжаться': {'cases': ['ins'], 'context': ['control', 'management']}
+}
+
 def analyze_pronoun_representation(model, tokenizer, pronoun: str, context: str = ""):
     """Analyze how a pronoun is represented in the model using XLM-RoBERTa"""
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -174,267 +256,220 @@ def compare_pronouns(model, tokenizer, pronoun1: str, pronoun2: str, context: st
 
 def predict_case(model, tokenizer, sentence: str, pronoun: str, possible_cases: dict) -> tuple[str, dict[str, float]]:
     """
-    Enhanced prediction of which case should be used for a pronoun in a given sentence using masked language modeling.
-    Implements multiple strategies to improve accuracy:
-    1. Case-specific context windows and scoring
-    2. Preposition and verb agreement analysis
-    3. Ensemble of different prediction strategies
-    4. Improved context analysis with word order
-    5. Case-specific boosting based on grammatical patterns
+    Enhanced prediction with improved grammatical pattern recognition and scoring.
+    Focuses on better handling of non-nominative cases while maintaining nominative accuracy.
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
     model.eval()
     
-    # Case-specific parameters with refined values based on results
+    # Optimized case parameters based on RuGPT performance analysis
     case_params = {
-        'nom': {
-            'temperature': 0.4,  # Lower temperature for more confident predictions
-            'context_weight': 1.3,
-            'position_weight': 1.2,  # Nominative often appears at start
-            'verb_boost': 1.4  # Strong boost for verb agreement
-        },
-        'dat': {
-            'temperature': 0.7,
-            'context_weight': 1.6,  # Increased for better preposition handling
-            'prep_boost': 1.5,  # Strong boost for preposition agreement
-            'verb_boost': 1.3
-        },
-        'gen': {
-            'temperature': 0.5,
-            'context_weight': 1.2,
-            'prep_boost': 1.4,
-            'verb_boost': 1.3,
-            'negation_boost': 1.5  # Genitive often follows negation
-        },
-        'acc': {
-            'temperature': 0.6,
-            'context_weight': 1.2,
-            'verb_boost': 1.5,  # Strong boost for verb agreement
-            'position_weight': 1.1  # Often follows verb
-        },
-        'ins': {
-            'temperature': 0.6,
-            'context_weight': 1.4,
-            'verb_boost': 1.4,
-            'prep_boost': 1.3
-        },
-        'prep': {
-            'temperature': 0.5,
-            'context_weight': 1.5,
-            'prep_boost': 1.6,  # Strongest boost for preposition agreement
-            'position_weight': 1.2  # Often follows preposition
-        }
+        'nom': {'temperature': 0.7, 'weight': 1.2, 'prompt_weight': 1.5, 'context_boost': 1.3},
+        'dat': {'temperature': 0.8, 'weight': 1.3, 'prompt_weight': 1.4, 'context_boost': 1.4},
+        'gen': {'temperature': 0.8, 'weight': 1.3, 'prompt_weight': 1.4, 'context_boost': 1.4},
+        'acc': {'temperature': 0.7, 'weight': 1.4, 'prompt_weight': 1.5, 'context_boost': 1.5},
+        'ins': {'temperature': 0.8, 'weight': 1.3, 'prompt_weight': 1.4, 'context_boost': 1.4},
+        'prep': {'temperature': 0.8, 'weight': 1.3, 'prompt_weight': 1.4, 'context_boost': 1.4}
     }
     
-    # Expanded preposition dictionary with more context
-    prepositions = {
-        'в': {'cases': ['prep', 'acc'], 'context': ['location', 'time', 'state']},
-        'на': {'cases': ['prep', 'acc'], 'context': ['surface', 'time', 'state']},
-        'с': {'cases': ['ins'], 'context': ['accompaniment', 'instrument', 'manner']},
-        'к': {'cases': ['dat'], 'context': ['direction', 'purpose']},
-        'от': {'cases': ['gen'], 'context': ['source', 'cause', 'separation']},
-        'у': {'cases': ['gen'], 'context': ['possession', 'location']},
-        'по': {'cases': ['dat', 'prep'], 'context': ['surface', 'time', 'manner']},
-        'о': {'cases': ['prep'], 'context': ['topic', 'subject']},
-        'за': {'cases': ['acc', 'ins'], 'context': ['location', 'time', 'purpose']},
-        'под': {'cases': ['acc', 'ins'], 'context': ['location', 'state']},
-        'над': {'cases': ['ins'], 'context': ['location', 'superiority']},
-        'перед': {'cases': ['ins'], 'context': ['location', 'time']},
-        'между': {'cases': ['ins'], 'context': ['location', 'relationship']},
-        'через': {'cases': ['acc'], 'context': ['time', 'space']},
-        'без': {'cases': ['gen'], 'context': ['absence', 'lack']},
-        'для': {'cases': ['gen'], 'context': ['purpose', 'benefit']},
-        'до': {'cases': ['gen'], 'context': ['limit', 'time']},
-        'из': {'cases': ['gen'], 'context': ['source', 'material']},
-        'про': {'cases': ['acc'], 'context': ['topic', 'subject']},
-        'ради': {'cases': ['gen'], 'context': ['purpose', 'benefit']},
-        'сквозь': {'cases': ['acc'], 'context': ['space', 'time']},
-        'среди': {'cases': ['gen'], 'context': ['location', 'group']},
-        'вокруг': {'cases': ['gen'], 'context': ['location', 'surroundings']},
-        'вдоль': {'cases': ['gen'], 'context': ['direction', 'location']},
-        'внутри': {'cases': ['gen'], 'context': ['location', 'interior']},
-        'вне': {'cases': ['gen'], 'context': ['location', 'exclusion']},
-        'вопреки': {'cases': ['dat'], 'context': ['opposition', 'contrast']},
-        'благодаря': {'cases': ['dat'], 'context': ['cause', 'reason']},
-        'согласно': {'cases': ['dat'], 'context': ['agreement', 'correspondence']},
-        'навстречу': {'cases': ['dat'], 'context': ['direction', 'movement']},
-        'наперекор': {'cases': ['dat'], 'context': ['opposition', 'defiance']},
-        'подобно': {'cases': ['dat'], 'context': ['similarity', 'comparison']},
-        'соответственно': {'cases': ['dat'], 'context': ['correspondence', 'agreement']}
-    }
-    
-    # Expanded verb dictionary with more context and case patterns
-    verb_cases = {
-        'видеть': {'cases': ['acc'], 'context': ['perception', 'observation']},
-        'любить': {'cases': ['acc'], 'context': ['emotion', 'preference']},
-        'ждать': {'cases': ['gen'], 'context': ['expectation', 'anticipation']},
-        'бояться': {'cases': ['gen'], 'context': ['emotion', 'fear']},
-        'хотеть': {'cases': ['gen'], 'context': ['desire', 'wish']},
-        'давать': {'cases': ['dat'], 'context': ['transfer', 'giving']},
-        'говорить': {'cases': ['dat', 'prep'], 'context': ['communication', 'speech']},
-        'помогать': {'cases': ['dat'], 'context': ['assistance', 'support']},
-        'управлять': {'cases': ['ins'], 'context': ['control', 'direction']},
-        'гордиться': {'cases': ['ins'], 'context': ['emotion', 'pride']},
-        'заниматься': {'cases': ['ins'], 'context': ['activity', 'occupation']},
-        'думать': {'cases': ['prep'], 'context': ['thought', 'consideration']},
-        'мечтать': {'cases': ['prep'], 'context': ['imagination', 'desire']},
-        'встречать': {'cases': ['acc'], 'context': ['meeting', 'greeting']},
-        'понимать': {'cases': ['acc'], 'context': ['comprehension', 'understanding']},
-        'знать': {'cases': ['acc'], 'context': ['knowledge', 'familiarity']},
-        'слушать': {'cases': ['acc'], 'context': ['perception', 'attention']},
-        'смотреть': {'cases': ['acc'], 'context': ['perception', 'observation']},
-        'чувствовать': {'cases': ['acc'], 'context': ['perception', 'sensation']},
-        'желать': {'cases': ['gen'], 'context': ['desire', 'wish']},
-        'требовать': {'cases': ['gen'], 'context': ['demand', 'request']},
-        'просить': {'cases': ['gen'], 'context': ['request', 'appeal']},
-        'лишиться': {'cases': ['gen'], 'context': ['loss', 'deprivation']},
-        'добиваться': {'cases': ['gen'], 'context': ['achievement', 'attainment']},
-        'добиться': {'cases': ['gen'], 'context': ['achievement', 'success']},
-        'избегать': {'cases': ['gen'], 'context': ['avoidance', 'evasion']},
-        'избежать': {'cases': ['gen'], 'context': ['avoidance', 'escape']},
-        'касаться': {'cases': ['gen'], 'context': ['contact', 'relation']},
-        'касаться': {'cases': ['prep'], 'context': ['relation', 'connection']},
-        'надеяться': {'cases': ['prep'], 'context': ['hope', 'expectation']},
-        'заботиться': {'cases': ['prep'], 'context': ['care', 'concern']},
-        'интересоваться': {'cases': ['ins'], 'context': ['interest', 'curiosity']},
-        'увлекаться': {'cases': ['ins'], 'context': ['interest', 'enthusiasm']},
-        'восхищаться': {'cases': ['ins'], 'context': ['admiration', 'delight']},
-        'довольствоваться': {'cases': ['ins'], 'context': ['satisfaction', 'contentment']},
-        'пользоваться': {'cases': ['ins'], 'context': ['use', 'utilization']},
-        'обладать': {'cases': ['ins'], 'context': ['possession', 'ownership']},
-        'владеть': {'cases': ['ins'], 'context': ['possession', 'control']},
-        'руководить': {'cases': ['ins'], 'context': ['control', 'direction']},
-        'командовать': {'cases': ['ins'], 'context': ['control', 'authority']},
-        'распоряжаться': {'cases': ['ins'], 'context': ['control', 'management']}
-    }
-    
-    def analyze_sentence_context(sentence: str) -> dict:
-        """Enhanced sentence context analysis with word order and grammatical patterns"""
+    def analyze_context(sentence: str) -> dict:
+        """Enhanced context analysis with improved grammatical pattern recognition"""
         words = sentence.lower().split()
-        context_info = {
+        context = {
             'prepositions': [],
             'verbs': [],
-            'preceding_word': words[-2] if len(words) > 1 else None,
-            'following_word': words[1] if len(words) > 1 else None,
-            'word_order': [],
-            'negation': False,
-            'question': False
+            'is_question': '?' in sentence or any(w in ['кто', 'что', 'где', 'когда', 'почему', 'как'] for w in words),
+            'has_negation': any(w in ['не', 'нет', 'ни'] for w in words),
+            'word_positions': {word: i for i, word in enumerate(words)},
+            'sentence_structure': {
+                'has_subject': False,
+                'has_direct_object': False,
+                'has_indirect_object': False,
+                'has_prepositional_phrase': False
+            }
         }
         
-        # Check for negation and questions
-        context_info['negation'] = any(word in ['не', 'нет', 'ни'] for word in words)
-        context_info['question'] = any(word in ['что', 'кто', 'где', 'когда', 'почему', 'как'] for word in words)
-        
-        # Analyze word order and relationships
+        # Analyze sentence structure and grammatical patterns
         for i, word in enumerate(words):
-            # Find prepositions and their context
             if word in prepositions:
                 prep_info = prepositions[word]
-                context_info['prepositions'].append({
+                context['prepositions'].append({
                     'word': word,
+                    'position': i,
                     'cases': prep_info['cases'],
                     'context': prep_info['context'],
-                    'position': i,
-                    'next_word': words[i + 1] if i + 1 < len(words) else None
+                    'is_prepositional': 'prep' in prep_info['cases'],
+                    'is_genitive': 'gen' in prep_info['cases']
                 })
+                if 'prep' in prep_info['cases']:
+                    context['sentence_structure']['has_prepositional_phrase'] = True
             
-            # Find verbs and their context
-            if word in verb_cases:
+            elif word in verb_cases:
                 verb_info = verb_cases[word]
-                context_info['verbs'].append({
+                context['verbs'].append({
                     'word': word,
+                    'position': i,
                     'cases': verb_info['cases'],
                     'context': verb_info['context'],
-                    'position': i,
-                    'next_word': words[i + 1] if i + 1 < len(words) else None
+                    'is_transitive': 'acc' in verb_info['cases'],
+                    'is_dative': 'dat' in verb_info['cases'],
+                    'is_instrumental': 'ins' in verb_info['cases']
                 })
-            
-            # Track word order for case-specific analysis
-            context_info['word_order'].append({
-                'word': word,
-                'position': i,
-                'is_preposition': word in prepositions,
-                'is_verb': word in verb_cases
-            })
+                if 'acc' in verb_info['cases']:
+                    context['sentence_structure']['has_direct_object'] = True
+                if 'dat' in verb_info['cases']:
+                    context['sentence_structure']['has_indirect_object'] = True
         
-        return context_info
+        # Detect subject based on word order and question patterns
+        if context['is_question']:
+            context['sentence_structure']['has_subject'] = True
+        elif words and words[0] not in prepositions and words[0] not in verb_cases:
+            context['sentence_structure']['has_subject'] = True
+        
+        return context
     
-    def get_case_specific_prompts(sentence: str, case: str) -> list[str]:
-        """Generate enhanced case-specific prompts based on detailed context analysis"""
-        context = analyze_sentence_context(sentence)
+    def get_enhanced_prompts(sentence: str, context: dict, case: str) -> list[tuple[str, float]]:
+        """Generate enhanced prompts with improved grammatical pattern recognition"""
         prompts = []
+        words = sentence.lower().split()
+        params = case_params[case]
         
-        # Base prompts with position awareness
+        # Base prompt with standard weight
+        prompts.append((f"{sentence} {tokenizer.mask_token}", 1.0))
+        
+        # Case-specific prompt strategies with enhanced patterns
         if case == 'nom':
-            # Nominative often appears at start or after certain verbs
-            prompts.extend([
-                f"{tokenizer.mask_token} {sentence}",  # Start position
-                f"{sentence} {tokenizer.mask_token}"   # End position
-            ])
-        else:
-            prompts.extend([
-                f"{sentence} {tokenizer.mask_token}",  # Original
-                f"{tokenizer.mask_token} {sentence}",  # Reversed
-                f"{sentence[:len(sentence)//2]} {tokenizer.mask_token} {sentence[len(sentence)//2:]}"  # Split context
-            ])
+            if context['is_question']:
+                # Enhanced subject prompts for questions
+                prompts.append((f"{tokenizer.mask_token} {sentence}", params['prompt_weight']))
+                prompts.append((f"Кто {tokenizer.mask_token} {sentence}", params['prompt_weight']))
+                prompts.append((f"Что {tokenizer.mask_token} {sentence}", params['prompt_weight']))
+            elif context['sentence_structure']['has_subject']:
+                # Subject prompts for declarative sentences
+                prompts.append((f"{tokenizer.mask_token} {sentence}", params['prompt_weight']))
         
-        # Add preposition-aware prompts
-        if context['prepositions']:
-            for prep_info in context['prepositions']:
-                if case in prep_info['cases']:
-                    # Create prompts that emphasize preposition context
-                    prompts.extend([
-                        f"{prep_info['word']} {tokenizer.mask_token} {sentence.replace(prep_info['word'], '').strip()}",
-                        f"{sentence} {prep_info['word']} {tokenizer.mask_token}",
-                        f"{prep_info['word']} {tokenizer.mask_token} {context['following_word'] if context['following_word'] else ''}"
-                    ])
+        elif case == 'acc':
+            # Enhanced direct object prompts
+            for verb in context['verbs']:
+                if verb['is_transitive']:
+                    # Boost prompts with transitive verbs
+                    prompts.append((f"{verb['word']} {tokenizer.mask_token}", params['prompt_weight']))
+                    prompts.append((f"{sentence} {verb['word']} {tokenizer.mask_token}", params['prompt_weight']))
         
-        # Add verb-aware prompts
-        if context['verbs']:
-            for verb_info in context['verbs']:
-                if case in verb_info['cases']:
-                    # Create prompts that emphasize verb context
-                    prompts.extend([
-                        f"{verb_info['word']} {tokenizer.mask_token} {sentence.replace(verb_info['word'], '').strip()}",
-                        f"{sentence} {verb_info['word']} {tokenizer.mask_token}",
-                        f"{verb_info['word']} {tokenizer.mask_token} {context['following_word'] if context['following_word'] else ''}"
-                    ])
+        elif case == 'dat':
+            # Enhanced indirect object prompts
+            for verb in context['verbs']:
+                if verb['is_dative']:
+                    # Boost prompts with dative verbs
+                    prompts.append((f"{verb['word']} {tokenizer.mask_token}", params['prompt_weight']))
+                    prompts.append((f"{sentence} {verb['word']} {tokenizer.mask_token}", params['prompt_weight']))
         
-        # Add negation-aware prompts for genitive
-        if case == 'gen' and context['negation']:
-            prompts.extend([
-                f"не {tokenizer.mask_token} {sentence.replace('не', '').strip()}",
-                f"{sentence} не {tokenizer.mask_token}"
-            ])
+        elif case == 'gen':
+            # Enhanced genitive prompts
+            for prep in context['prepositions']:
+                if prep['is_genitive']:
+                    # Boost prompts with genitive prepositions
+                    prompts.append((f"{prep['word']} {tokenizer.mask_token}", params['prompt_weight']))
+                    prompts.append((f"{sentence} {prep['word']} {tokenizer.mask_token}", params['prompt_weight']))
         
-        # Add question-aware prompts
-        if context['question']:
-            prompts.extend([
-                f"{tokenizer.mask_token} ? {sentence}",
-                f"{sentence} {tokenizer.mask_token} ?"
-            ])
+        elif case == 'ins':
+            # Enhanced instrumental prompts
+            for verb in context['verbs']:
+                if verb['is_instrumental']:
+                    prompts.append((f"{verb['word']} {tokenizer.mask_token}", params['prompt_weight']))
+                    prompts.append((f"{sentence} {verb['word']} {tokenizer.mask_token}", params['prompt_weight']))
         
-        return list(set(prompts))  # Remove duplicates
+        elif case == 'prep':
+            # Enhanced prepositional prompts
+            for prep in context['prepositions']:
+                if prep['is_prepositional']:
+                    prompts.append((f"{prep['word']} {tokenizer.mask_token}", params['prompt_weight']))
+                    prompts.append((f"{sentence} {prep['word']} {tokenizer.mask_token}", params['prompt_weight']))
+        
+        # Add negation-aware prompts with enhanced weights
+        if context['has_negation']:
+            prompts.append((f"не {tokenizer.mask_token} {sentence}", params['prompt_weight']))
+            prompts.append((f"{sentence} не {tokenizer.mask_token}", params['prompt_weight']))
+        
+        return list(set(prompts))  # Remove duplicates while preserving weights
     
-    # Calculate scores for each case using ensemble approach
+    def calculate_enhanced_score(logits: torch.Tensor, token_ids: list[int], 
+                               temperature: float, context: dict, case: str) -> float:
+        """Calculate score with improved grammatical pattern recognition"""
+        # Apply temperature scaling
+        scaled_logits = logits / temperature
+        probs = torch.softmax(scaled_logits, dim=-1)
+        
+        # Calculate base score for the pronoun tokens
+        token_scores = []
+        for token_id in token_ids:
+            token_scores.append(probs[0, token_id].item())
+        
+        if not token_scores:
+            return 0.0
+        
+        # Use geometric mean for multi-token pronouns
+        base_score = np.exp(np.mean(np.log(np.array(token_scores) + 1e-10)))
+        params = case_params[case]
+        
+        # Apply enhanced case-specific adjustments
+        if case == 'nom':
+            if context['is_question'] or context['sentence_structure']['has_subject']:
+                base_score *= params['context_boost']
+        
+        elif case == 'acc':
+            if context['sentence_structure']['has_direct_object']:
+                base_score *= params['context_boost']
+            if any(v['is_transitive'] for v in context['verbs']):
+                base_score *= 1.2
+        
+        elif case == 'dat':
+            if context['sentence_structure']['has_indirect_object']:
+                base_score *= params['context_boost']
+            if any(v['is_dative'] for v in context['verbs']):
+                base_score *= 1.2
+        
+        elif case == 'gen':
+            if any(p['is_genitive'] for p in context['prepositions']):
+                base_score *= params['context_boost']
+        
+        elif case == 'ins':
+            if any(v['is_instrumental'] for v in context['verbs']):
+                base_score *= params['context_boost']
+        
+        elif case == 'prep':
+            if context['sentence_structure']['has_prepositional_phrase']:
+                base_score *= params['context_boost']
+            if any(p['is_prepositional'] for p in context['prepositions']):
+                base_score *= 1.2
+        
+        # Apply negation adjustment
+        if context['has_negation']:
+            if case in ['gen', 'acc']:  # Common cases with negation
+                base_score *= 1.1
+        
+        return float(base_score)
+    
+    # Analyze context with enhanced pattern recognition
+    context = analyze_context(sentence)
+    
+    # Calculate scores for each case with improved weighting
     case_scores = {}
     for case_name, case_pronoun in possible_cases.items():
         try:
-            # Get case-specific parameters
-            params = case_params.get(case_name, {'temperature': 0.7, 'context_weight': 1.0})
-            temperature = params['temperature']
-            context_weight = params['context_weight']
+            # Get case parameters
+            params = case_params.get(case_name, {'temperature': 0.8, 'weight': 1.0, 'prompt_weight': 1.0, 'context_boost': 1.0})
             
-            # Get case-specific prompts
-            prompts = get_case_specific_prompts(sentence, case_name)
+            # Get enhanced prompts with weights
+            prompts_with_weights = get_enhanced_prompts(sentence, context, case_name)
             
-            # Get all token IDs for the pronoun
+            # Get token IDs for the pronoun
             pronoun_token_ids = tokenizer.encode(case_pronoun, add_special_tokens=False)
             
-            # Calculate scores for each prompt
-            prompt_scores = []
-            for prompt in prompts:
+            # Calculate scores for each prompt with improved weighting
+            weighted_scores = []
+            for prompt, weight in prompts_with_weights:
                 inputs = tokenizer(prompt, return_tensors="pt").to(device)
                 mask_token_index = torch.where(inputs["input_ids"] == tokenizer.mask_token_id)[1]
                 
@@ -445,59 +480,20 @@ def predict_case(model, tokenizer, sentence: str, pronoun: str, possible_cases: 
                     outputs = model(**inputs)
                     mask_token_logits = outputs.logits[0, mask_token_index, :]
                     
-                    # Apply temperature scaling
-                    scaled_logits = mask_token_logits / temperature
-                    probs = torch.softmax(scaled_logits, dim=-1)
-                    
-                    # Calculate score considering all tokens in the pronoun
-                    token_scores = []
-                    for i, token_id in enumerate(pronoun_token_ids):
-                        if i == 0:
-                            token_scores.append(probs[0, token_id].item())
-                        else:
-                            prev_tokens = tokenizer.decode(pronoun_token_ids[:i])
-                            new_prompt = f"{sentence} {prev_tokens} {tokenizer.mask_token}"
-                            new_inputs = tokenizer(new_prompt, return_tensors="pt").to(device)
-                            new_mask_index = torch.where(new_inputs["input_ids"] == tokenizer.mask_token_id)[1]
-                            
-                            if len(new_mask_index) > 0:
-                                new_outputs = model(**new_inputs)
-                                new_logits = new_outputs.logits[0, new_mask_index, :] / temperature
-                                new_probs = torch.softmax(new_logits, dim=-1)
-                                token_scores.append(new_probs[0, token_id].item())
-                    
-                    if token_scores:
-                        # Use log-sum-exp trick for numerical stability
-                        log_scores = np.log(np.array(token_scores) + 1e-10)
-                        prompt_score = np.exp(np.mean(log_scores))
-                        
-                        # Apply context-specific weighting
-                        context = analyze_sentence_context(sentence)
-                        
-                        # Apply case-specific boosts
-                        if case_name == 'nom' and any(w['is_verb'] for w in context['word_order']):
-                            prompt_score *= params.get('verb_boost', 1.0)
-                        elif case_name in ['dat', 'prep'] and any(w['is_preposition'] for w in context['word_order']):
-                            prompt_score *= params.get('prep_boost', 1.0)
-                        elif case_name == 'gen' and context['negation']:
-                            prompt_score *= params.get('negation_boost', 1.0)
-                        elif case_name in ['acc', 'ins'] and any(w['is_verb'] for w in context['word_order']):
-                            prompt_score *= params.get('verb_boost', 1.0)
-                        
-                        # Apply position-based weighting
-                        if case_name in ['nom', 'acc'] and context['word_order']:
-                            position = context['word_order'][0]['position']
-                            if (case_name == 'nom' and position == 0) or \
-                               (case_name == 'acc' and position > 0):
-                                prompt_score *= params.get('position_weight', 1.0)
-                        
-                        prompt_scores.append(prompt_score)
+                    # Calculate enhanced score with context
+                    prompt_score = calculate_enhanced_score(
+                        mask_token_logits,
+                        pronoun_token_ids,
+                        params['temperature'],
+                        context,
+                        case_name
+                    )
+                    weighted_scores.append(prompt_score * weight)
             
-            # Average score across different prompts with weighting
-            if prompt_scores:
-                # Weight later prompts more heavily as they're more specific
-                weights = np.linspace(1.0, 1.5, len(prompt_scores))
-                case_scores[case_name] = float(np.average(prompt_scores, weights=weights))
+            # Use weighted average of prompt scores with improved weighting
+            if weighted_scores:
+                # Apply case-specific weight and context boost
+                case_scores[case_name] = float(np.mean(weighted_scores)) * params['weight']
             else:
                 case_scores[case_name] = 0.0
             
@@ -509,28 +505,10 @@ def predict_case(model, tokenizer, sentence: str, pronoun: str, possible_cases: 
     if not case_scores:
         raise ValueError("No valid cases could be processed")
     
-    # Apply final context-based boosting
-    context = analyze_sentence_context(sentence)
-    
-    # Boost scores based on grammatical patterns
-    for case_name in case_scores:
-        # Preposition-based boosting
-        if context['prepositions']:
-            for prep_info in context['prepositions']:
-                if case_name in prep_info['cases']:
-                    case_scores[case_name] *= params.get('prep_boost', 1.2)
-        
-        # Verb-based boosting
-        if context['verbs']:
-            for verb_info in context['verbs']:
-                if case_name in verb_info['cases']:
-                    case_scores[case_name] *= params.get('verb_boost', 1.2)
-        
-        # Special case handling
-        if case_name == 'gen' and context['negation']:
-            case_scores[case_name] *= params.get('negation_boost', 1.5)
-        elif case_name == 'nom' and not any(w['is_preposition'] for w in context['word_order']):
-            case_scores[case_name] *= params.get('position_weight', 1.2)
+    # Normalize scores to sum to 1 with improved stability
+    total_score = sum(case_scores.values())
+    if total_score > 0:
+        case_scores = {case: score/total_score for case, score in case_scores.items()}
     
     # Return both the predicted case and the scores
     predicted_case = max(case_scores.items(), key=lambda x: x[1])[0]
@@ -661,7 +639,8 @@ model = AutoModelForMaskedLM.from_pretrained(
     model_name,
     torch_dtype=torch.float16,  # Use half precision for memory efficiency
     low_cpu_mem_usage=True,
-    device_map="auto"  # Added for better memory management
+    device_map="auto",  # Added for better memory management
+    attn_implementation="eager"  # Fix attention implementation warning
 )
 
 # Move model to GPU if available
