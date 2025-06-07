@@ -1,146 +1,114 @@
 
-
 import pandas as pd
-
+import sys
+from pathlib import Path
+import torch as t
+from torch import Tensor
+import numpy as np
+import einops
+from tqdm.notebook import tqdm
+import plotly.express as px
+import re
+import itertools
+from jaxtyping import Float, Int, Bool
+from typing import Literal, Callable
+from functools import partial
+from IPython.display import display, HTML
+from rich.table import Table, Column
+from rich import print as rprint
+import circuitsvis as cv
+from transformer_lens.hook_points import HookPoint
+from transformer_lens import utils, HookedTransformer, ActivationCache
+from transformer_lens.components import Embed, Unembed, LayerNorm, MLP
 import pandas as pd
-
-df = pd.read_csv('russian_mi_dataset.csv')
-
-
-df.columns = df.columns.str.strip()
-
-# This part of code organizes the different columns (including irregular cases) into classes
-# 6 lists for each case
-# order in list: masc, fem, [if irregular exists: irreg_masc, irreg_fem, irreg_plural]
-gen = ['gen', 'gen_fem', 'gen_plural']
-
-# dat_n (irregular dat masc)= нему (к нему),
-# ins_fem (irregular dat fem) = ней (к ней),
-# ins (irregular dat plural) = ним (к ним)
-dat = ['dat', 'dat_fem', 'dat_plural', 'dat_n', 'ins_fem', 'ins']
-
-acc = ['acc', 'acc_fem', 'acc_plural']
-# dat_plural = (irregular ins masc) = им (я горжусь им),
-# dat_fem (irregular ins fem) = ей (я горжусь ей),
-# ins_plural_no_n (irregular ins plural) = им (я горжусь им
-ins = ['ins', 'ins_fem', 'ins_plural', 'dat_plural', 'dat_fem', 'ins_plural_no_n']
-nom = ['nom', 'nom_fem', 'nom_plural']
-prep = ['prep', 'prep_fem', 'prep_plural']
+import os
 
 
-# just converting from string to the name of a list
-cases = {
-    'gen': gen,
-    'dat': dat,
-    'acc': acc,
-    'ins': ins,
-    'nom': nom,
-    'prep': prep,
-}
+import torch
+import torch.nn.functional as F
+from transformer_lens import HookedTransformer
+from transformers import AutoTokenizer
+import utils  # твой модуль
 
+import torch
+import torch.nn.functional as F
+from transformer_lens import HookedTransformer
+from transformers import AutoTokenizer
 
-# our output files for pairwise comparisons.
-# Each will have column for sentence, column for each incorrect case, and comment column
-# column for each case will contain the logit difference between the correct case and this case
-# comment column will contain info about when the logit lens was applied (ex. 27 if after layer 27)
-output_paths = {
-    'acc': 'acc.csv',
-    'gen': 'gen.csv',
-    'dat': 'dat.csv',
-    'ins': 'ins.csv',
-}
+import torch
+import torch.nn.functional as F
+from transformer_lens import HookedTransformer
+from transformers import AutoTokenizer
 
-# setting up the files
-for case_key, path in output_paths.items():
-    if not os.path.exists(path):
-        columns = ['sentence'] + [c for c in cases if c != case_key] + ['comment']
-        pd.DataFrame(columns=columns).to_csv(path, index=False)
+# 💻 Устройство — принудительно cuda:3, если доступно
+device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
 
+print(f"Используем устройство: {device}")
 
+# 🧠 Загружаем модель Mistral на device
+model = HookedTransformer.from_pretrained(
+    "mistralai/Mistral-7B-v0.1",
+    center_unembed=True,
+    center_writing_weights=True,
+    fold_ln=True,
+    refactor_factored_attn_matrices=False,
+    device=device,  # важно указать при загрузке
+)
+model.to(device)  # на всякий случай дополнительно
 
-# most of the next code is just because I wrote the dataset in a stupid way. essentially its going from col name to correct form
-form_lookup = {}
-for col in df.columns:
-    form = str(df[col].iloc[0]).strip()
-    if pd.notna(form):
-        form_lookup[col] = form
+# Токенизатор (у токенизатора device нет)
+tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
 
+# 🔍 Функция логит-линзы с явным переносом всех тензоров на device
+def run_logit_lens(text: str):
+    tokens = model.to_tokens(text, prepend_bos=False).to(device)
+    token_strs = model.to_str_tokens(tokens)
 
+    logits, cache = model.run_with_cache(tokens)
 
-# reverses dict to get form for each token
-def get_token_to_column_mapping(form_lookup):
-    return {form: col for col, form in form_lookup.items()}
+    print(f"\n🔍 Logit lens для строки: {text!r}")
+    print(f"📎 Токены: {token_strs}\n")
 
-token_to_column = get_token_to_column_mapping(form_lookup)
+    for layer in range(model.cfg.n_layers):
+        resid = cache["resid_post", layer][0, -1]
+        if resid.device != device:
+            resid = resid.to(device)
 
-# Turn LLM logits into logits_dict
-def extract_logits_by_token(logits, tokenizer, token_to_column, target_position):
-    '''
-    :param logits: torch tensor of shape (seq_len, vocab_size)
-    :param tokenizer: tokenizer object
-    :param token_to_column: dict like {'его': 'acc', 'ей': 'dat_fem'}
-    :param target_position: position in sequence to extract from
-    :return: dict like {'acc': 1.23, 'dat_fem': 0.98, ...}
-    '''
-    logits_dict = {}
-    for token_str, column_name in token_to_column.items():
-        token_ids = tokenizer(token_str, add_special_tokens=False)['input_ids']
-        if len(token_ids) != 1:
-            continue  # skip compound/multi-token cases
-        token_id = token_ids[0]
-        try:
-            logits_dict[column_name] = logits[target_position, token_id].item()
-        except IndexError:
-            logits_dict[column_name] = None
-    return logits_dict
+        logits_lens = model.unembed(resid)
+        if logits_lens.device != device:
+            logits_lens = logits_lens.to(device)
 
+        probs = F.softmax(logits_lens, dim=-1)
+        topk = torch.topk(probs, k=5)
 
-# This function compares the logits of correct to the logits of incorrect case.
-# If the correct case contains possible irregular options, we will first see whether
-# irregular or no-irregular options are higher and use the higher one
-# then it will take the mean difference between correct and incorrect cases across all genders and write that to the correct file
-def pairwise_logit_comparison_across_case(correct, sentence, logits, comment):
-    '''
-    :param correct: The correct case for that sentence
-    :param sentence: The original sentence
-    :param logits: All unsorted logits returned from the model
-    :param comment: where logit lens was taken
-    :return: writes to file
-    '''
+        print(f"--- Слой {layer} ---")
+        for i in range(5):
+            token = model.to_string(topk.indices[i])
+            prob = topk.values[i].item()
+            print(f"{i+1}. {token!r:<10} → {prob:.4f}")
 
+# 🎯 Проверка (без utils), также все тензоры на device
+def test_prompt(prompt: str, target: str):
+    print(f"\n🎯 Проверка: prompt = {prompt!r}, target = {target!r}")
+    tokens = model.to_tokens(prompt + target, prepend_bos=True).to(device)
 
+    logits = model(tokens)
+    target_token = tokens[0, -1]
 
-    correct_cols = cases[correct] # just converting from string to the name of a list
+    last_logits = logits[0, -2]
+    if last_logits.device != device:
+        last_logits = last_logits.to(device)
 
+    probs = F.softmax(last_logits, dim=-1)
+    target_prob = probs[target_token].item()
 
-    reg_cols = correct_cols[:3]  # masc, fem, plural
-    irreg_cols = correct_cols[3:] if len(correct_cols) > 3 else [] # if there are irregular, store them seperately and compare
+    print(f"Вероятность токена {target!r}: {target_prob:.4f}")
 
-    # compare irregular and regular logits to determine which is correct (we assume the one with higher prop is correct)
-    reg_logits = [logits.get(col) for col in reg_cols if col in logits]
-    irreg_logits = [logits.get(col) for col in irreg_cols if col in logits]
+# Запускаем логит-линзу
+run_logit_lens("Ich liebe")
+run_logit_lens("Ich gab")
 
-    from statistics import mean
-    avg_reg = mean(reg_logits) if reg_logits else float('-inf')
-    avg_irreg = mean(irreg_logits) if irreg_logits else float('-inf')
-    correct_logit = max(avg_reg, avg_irreg)
-
-    output = {'sentence': sentence}
-
-    # тnow we do pairwise comparison of each other case with the correct case
-    for case_name, columns in cases.items():
-        if case_name == correct:
-            continue
-        wrong_cols = columns[:3]
-        wrong_logits = [logits.get(col) for col in wrong_cols if col in logits]
-        if wrong_logits:
-            diff = correct_logit - mean(wrong_logits)
-            output[case_name] = round(diff, 8)
-        else:
-            output[case_name] = 'NA'
-
-
-    output['comment'] = comment
-
-
-    print(output)
+# Запускаем проверки с двумя вариантами ответов
+for prompt in ["Ich liebe ", "Ich gab "]:
+    for answer in ["den", "dem"]:
+        test_prompt(prompt, answer)
