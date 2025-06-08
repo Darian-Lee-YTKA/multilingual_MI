@@ -1,7 +1,8 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch.nn.functional as F
-
+import matplotlib
+import matplotlib.pyplot as plt
 # Устройство и модель
 device = torch.device("cuda:3" if torch.cuda.is_available() else "cpu")
 model_name = "sberbank-ai/rugpt3large_based_on_gpt2"
@@ -23,6 +24,26 @@ corrupted = ["она любит", "я начала с"]
 # Глобальные переменные
 clean_attn_output = []
 corrupt_attn_output = []
+
+attn_weights_storage = []
+
+def get_attention_weights(prompt, storage):
+    storage.clear()
+    inputs = tokenizer(prompt, return_tensors="pt").to(device)
+    with torch.no_grad():
+        outputs = model(**inputs, output_attentions=True)
+    
+    # Получаем последние скрытые состояния
+    last_hidden = outputs.hidden_states[-1].detach().cpu()  # [batch, seq_len, embed_dim]
+    storage.append(last_hidden)
+    
+    # Получаем веса внимания последнего слоя
+    attentions = outputs.attentions  # список тензоров по слоям
+    last_layer_attn = attentions[-1].detach().cpu()  # [batch, heads, seq_len, seq_len]
+    storage.append(last_layer_attn)
+    
+    return inputs
+
 
 def print_topk_logits(hidden, k=5):
     logits = model.lm_head(hidden[0, -1])
@@ -140,9 +161,36 @@ def run_with_patched_attn(patched_attn, prompt, target_words):
     
     return logits
 
+
+def plot_attention(attn_weights, head_idx, tokens, title=None):
+    # Если attn_weights — кортеж, берем первый элемент
+    if isinstance(attn_weights, tuple):
+        attn_weights = attn_weights[0]
+    
+    # attn_weights shape: [batch_size, num_heads, seq_len, seq_len]
+    print(attn_weights.shape)
+    attn = attn_weights[0, head_idx].cpu().numpy()  # shape: [seq_len, seq_len]
+
+    plt.figure(figsize=(8, 6))
+    plt.imshow(attn, cmap="viridis")
+    plt.colorbar()
+    plt.xticks(ticks=range(len(tokens)), labels=tokens, rotation=90)
+    plt.yticks(ticks=range(len(tokens)), labels=tokens)
+    if title:
+        plt.title(title)
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+
 # Основной цикл
 n_heads = model.config.n_head
 head_size = model.config.n_embd // n_heads
+
+
+
 
 for i, (clean_prompt, corrupt_prompt, correct, wrong) in enumerate(zip(true, corrupted, true_case, corrupted_acc)):
     print(f"\n🧪 Пример {i+1}: {clean_prompt}")
@@ -180,6 +228,14 @@ for i, (clean_prompt, corrupt_prompt, correct, wrong) in enumerate(zip(true, cor
     
     head_deltas.sort(key=lambda x: abs(x[1]), reverse=True)
     print("\n📊 🧠 printing for prompt: ", clean_prompt, corrupt_prompt)
-    print("\n📊 🧠 Топ-3 самых значимых головы:")
     for rank, (head, delta) in enumerate(head_deltas, 1):
         print(f"   {rank}. Head {head:2d}: Δ = {delta:+.4f}")
+    
+    get_attention_weights(clean_prompt, attn_weights_storage)
+    clean_attn_weights = attn_weights_storage[0]
+    tokens = clean_prompt.split(" ")
+    for i in range(4):
+        head, delta = head_deltas[i]
+        print(f"Визуализация внимания для головы {head} с Δ={delta:.4f}")
+
+        plot_attention(clean_attn_weights, head, tokens, title=f"Clean prompt attention")
