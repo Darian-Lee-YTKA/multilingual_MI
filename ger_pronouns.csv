@@ -1,0 +1,101 @@
+sentence,correct_case,nom,dat,gen,acc,nom_fem,dat_fem,gen_fem,acc_fem,nom_neut,dat_neut,gen_neut,acc_neut,nom_plural,dat_plural,gen_plural,acc_plural
+,nom,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Er hilft,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Das Buch,gen,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich sehe,acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich schenke,dat_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Meinung,gen_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Wir treffen,acc_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Er antwortet,dat_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Frau,gen_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich liebe,gen_acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich schenke,dat_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Autos,gen_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Er mag,acc_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich bin mit,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Katze,gen,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich habe,acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich habe mit,dat_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Das ist das Auto,gen_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Wir treffen,acc_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Er hilft,dat_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Zug,gen_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Sie jubelt,gen_acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich bin jetzt bei,dat_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Finden,acc_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Ich frage,acc_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Lehrer erklärt,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Idee,gen,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Arzt untersucht,acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Professorin diskutiert mit,dat_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Entscheidung,gen_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Kinder spielen gegen,acc_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Trainer glaubt,dat_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Geschichte,gen_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Das Kind spielt ohne,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Eltern gratulieren,dat_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Ansicht,gen_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Nachbar grüßt,acc_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Chef vertraut,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Lösung,gen,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Polizist verfolgt,acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Freundin telefoniert mit,dat_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Position,gen_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Gäste warten auf,acc_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Vater vertraut,dat_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Meinung,gen_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Mann spielt,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Lehrer dankt,dat_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Einstellung,gen_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Großeltern backen für,nom_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Mentor hilft,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Theorie,gen,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Detektiv beobachtet,acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Kollegin arbeitet mit,dat_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Haltung,gen_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Fans jubeln,acc_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Berater folgt,dat_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Perspektive,gen_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Das Tier isst,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Nachbarn drohen,dat_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Position,gen_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Publikum applaudiert,acc_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Katze sizt in der nähe von,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Methode,gen,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Pilot steuert,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der neue Haarschnitt passt,dat_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Entscheidung,gen_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Zuschauer beobachten,acc_fem,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Professor dient,dat_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die These,gen_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Das Mädchen streichelt,nom_neut,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Freunde helfen,dat_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Meinung,gen_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Chor singt für,acc_plural,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+,nom,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Mechaniker verzeiht,dat,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Die Strategie.,gen,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
+Der Kapitän navigiert,acc,er,ihm,seiner,ihn,sie,ihr,ihrer,sie,es,ihm,seiner,es,sie,ihnen,ihrer,sie
